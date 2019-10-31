@@ -3,7 +3,8 @@
 #define Speed 100
 
 void homing();
-commandscallback commands[1] = {{"g28",homing}};
+void moviment();
+commandscallback commands[1] = {{"G28",homing},{"G29",moviment}};
 gcode Commands(1,commands);
 
 double X;
@@ -18,20 +19,20 @@ void setup()
 
 void loop() 
 {
-  if(Commands.available())
-  {
-    double newXValue = X;
+  Commands.available()
+
+}
+void moviment(){
+  double newXValue = X;
     double newYValue = Y;
     
     if(Commands.availableValue('X'))
       newXValue = Commands.GetValue('X');
     if(Commands.availableValue('Y'))
-      newXValue = Commands.GetValue('Y');
+      newYValue = Commands.GetValue('Y');
 
     gotoLocation(newXValue,newYValue);
-  }
 }
-
 void homing()
 {
   // code to home machine
@@ -52,7 +53,12 @@ void gotoLocation(double NewX,double NewY)
   X = NewX;
   Y = NewY;
   A = ANewPosition;
-  B = BNewPosition;
+  B = BNewPosition;Serial.print(X);
+  
+  Serial.print(X);
+  Serial.print(" ");
+  Serial.print(Y);
+
 
   // code to run machine to location using:
   //  - ANewPosition (or A) and BNewPosition (or B)
